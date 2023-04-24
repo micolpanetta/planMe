@@ -1,0 +1,23 @@
+version: '3.3'
+
+services:
+  database_service:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - "3307:3306"
+    volumes:
+      - my-db:/var/lib/mysql
+  php_service:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on: 
+      - database_service
+    volumes:
+      - ./:/app/
+    working_dir: /app  
+
+volumes:
+  my-db:

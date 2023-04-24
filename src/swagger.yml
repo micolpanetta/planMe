@@ -1,0 +1,336 @@
+openapi: 3.0.3
+info:
+  title: Swagger PlanMe - OpenAPI 3.0
+  description: |-
+    This program aims to automate the daily problem of composing diversified and complete meals.
+    
+    You can manually insert the foods you prefere (POST /food), but you already dispose of a selected food dataset picked
+    from Foodb (https://foodb.ca/downloads).
+    
+    You can chose from these foods your favorite ones (you can easily search using GET /food/categories OR GET /food/name/{name}), 
+    
+    associate these foods to a user_id (POST /food/user) and
+    than the application will generate your meals (lunch and dinner)
+    
+    based on the diet you follow (vegan, vegetarian or onnivore) and the period (daily, weekly or monthly) 
+    for which you want to have your meals generated.
+
+
+  contact:
+    email: micol.panetta@gmail.com
+  version: 1.0.0
+
+tags:
+  - name: food
+    description: Everything about your Foods
+  - name: meal
+paths:
+  /food:
+    get:
+      tags:
+        - food
+      summary: Find foods
+      operationId: index
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Food'          
+        '404':
+          description: Food not found
+    post:
+      tags:
+        - food
+      summary: Add a new food
+      description: Adds a new food
+      operationId: food_new
+      requestBody:
+        description: Create a new food
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Food'
+      responses:
+        '200':
+          description: Successful operation
+  /food/name/{name}:
+    get:
+      tags:
+        - food
+      summary: Find foods by name
+      operationId: food_search_name
+      parameters:
+        - name: name
+          in: path
+          description: It's a %like% search
+          required: true
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Food'          
+        '404':
+          description: Food not found
+  /food/categories:
+    get:
+      tags:
+        - food
+      summary: Group foods by category
+      operationId: food_search_cat
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'          
+        '404':
+          description: Food not found     
+  /food/{foodId}:
+    get:
+      tags:
+        - food
+      summary: Find food by id
+      description: Returns a single food
+      operationId: food_show
+      parameters:
+        - name: foodId
+          in: path
+          description: id of food to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Food'          
+        '404':
+          description: Food not found
+    put:
+      tags:
+        - food
+      summary: Update an existing food
+      description: Update an existing food by Id
+      operationId: food_edit
+      parameters:
+        - name: foodId
+          in: path
+          description: id of food to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update an existing food
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Food'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Food not found
+    delete:
+      tags:
+        - food
+      summary: Delete a food
+      description: Deletes a food
+      operationId: food_delete
+      parameters:
+        - name: foodId
+          in: path
+          description: id of food to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Food not found
+  /food/food_user:        
+    post:
+      tags:
+        - food
+      summary: Associate foods to user
+      description: Associates foods to user
+      operationId: food_user
+      requestBody:
+        description: Associates foods to user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserFood'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFood'          
+  /meal/{diet}/{period}/{user_id}:
+    get:
+      tags:
+        - meal
+      summary: Generate a meal
+      description: Returns meals based on the diet and the period (daily, weekly, monthly)
+      operationId: getInventory
+      parameters:
+        - name: diet
+          in: path
+          description: Must be one between vegan, onnivore, vegetarian
+          required: true
+          schema:
+            type: string
+        - name: period
+          in: path
+          description: Must be one between daily, monthly, weekly
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: path
+          description: id of the associated user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meal'   
+        '400':
+          description: Wrong/Missing category         
+components:
+  schemas:
+    Food:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          format: int64
+          example: kiwi
+        category:
+          type: string
+          format: int32
+          example: fruit
+        description:
+          type: string
+          example: I'm  a kiwi
+        diets:
+          type: string
+          example: "onnivore, vegetarian, vegan"
+    UserFood:
+      type: object
+      properties:
+        food_ids:
+          example: [13, 14]
+        user_id:
+          type: integer
+          format: int64
+          example: 1
+    Meal:
+      type: object
+      properties:
+        day:
+          example: 1
+        lunch:
+          example: []
+        dinner:
+          example: []
+    Category:
+      type: object
+      properties:
+        fruit:
+          example: [{
+            "id": 1,
+            "name": "Kiwi",
+            "description": "",
+            "category": "fruit",
+            "diets": "onnivore, vegetarian, vegan"
+        }]
+        cereal:
+          example: [{
+            "id": 2,
+            "name": "Pasta",
+            "description": "",
+            "category": "cereal",
+            "diets": "onnivore, vegetarian, vegan"
+        }]
+        fat:
+          example: [{
+            "id": 3,
+            "name": "Oil",
+            "description": "",
+            "category": "fat",
+            "diets": "onnivore, vegetarian, vegan"
+        }]
+        veggie:
+          example: [{
+            "id": 4,
+            "name": "Tomato",
+            "description": "",
+            "category": "veggie",
+            "diets": "onnivore, vegetarian, vegan"
+        }]
+        protein:
+          example: [{
+            "id": 5,
+            "name": "Soy",
+            "description": "",
+            "category": "protein",
+            "diets": "onnivore, vegetarian, vegan"
+        }]
+  requestBodies:
+    Food:
+      description: Food object that needs to be added to the foodb
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Food'
+    UserFood:
+      description: Association user food
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserFood' 
+    Meal:
+      description: Generated meal
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Meal' 
+    Category:
+      description: Food Category
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Food'
