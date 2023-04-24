@@ -263,9 +263,79 @@ components:
         day:
           example: 1
         lunch:
-          example: []
+          example: {
+            "cereals": {
+                "id": 1,
+                "name": "Barley",
+                "description": "",
+                "category": "cereal",
+                "diets": "onnivore, vegetarian, vegan"
+            },
+            "proteins": {
+                "id": 2,
+                "name": "Soy bean",
+                "description": "",
+                "category": "protein",
+                "diets": "onnivore, vegetarian, vegan"
+            },
+            "veggies": {
+                "id": 3,
+                "name": "Green zucchini",
+                "description": "",
+                "category": "veggie",
+                "diets": "onnivore, vegetarian, vegan"
+            },
+            "fruits": {
+                "id": 4,
+                "name": "Kiwi",
+                "description": "",
+                "category": "fruit",
+                "diets": "onnivore, vegetarian, vegan"
+            },
+            "fats": {
+                "id": 5,
+                "name": "Oil",
+                "category": "fat",
+                "diets": "onnivore, vegetarian, vegan"
+            }
+        }
         dinner:
-          example: []
+          example: {
+            "cereals": {
+                "id": 6,
+                "name": "Spelt",
+                "description": "",
+                "category": "cereal",
+                "diets": "onnivore, vegetarian, vegan"
+            },
+            "proteins": {
+                "id": 7,
+                "name": "Chickpeas",
+                "description": "",
+                "category": "protein",
+                "diets": "onnivore, vegetarian, vegan"
+            },
+            "veggies": {
+                "id": 8,
+                "name": "Eggplant",
+                "description": "",
+                "category": "veggie",
+                "diets": "onnivore, vegetarian, vegan"
+            },
+            "fruits": {
+                "id": 9,
+                "name": "Strawberry",
+                "description": "",
+                "category": "fruit",
+                "diets": "onnivore, vegetarian, vegan"
+            },
+            "fats": {
+                "id": 10,
+                "name": "Avocado",
+                "category": "fat",
+                "diets": "onnivore, vegetarian, vegan"
+            }
+        }
     Category:
       type: object
       properties:

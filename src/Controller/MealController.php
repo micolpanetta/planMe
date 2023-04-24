@@ -41,7 +41,7 @@ class MealController extends AbstractController
 
         $date = date('YmdHis');
 
-        file_put_contents("../diet_$date.json", json_encode($meals));
+        //file_put_contents("../diet_$date.json", json_encode($meals));
 
         return $this->json($meals);
     }
