@@ -37,7 +37,7 @@ class Importer
     {
 
         $foodGroups = [
-            "Herbs and Spices", "Vegetables", "Herbs and Spices", "Teas",
+            "Herbs and Spices", "Herbs and Spices", "Teas",
             "Coffee and coffee products", "Cocoa and cocoa products",
             "Beverages", "Confectioneries", "Dishes", "Snack foods", "Baby foods",
             "Unclassified", "Herbs and spices", null

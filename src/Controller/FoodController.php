@@ -134,7 +134,7 @@ class FoodController extends AbstractController
         }
 
         $entityManager->flush();
-        return $this->json(["message" => 'Successfully associated new foods to user ' . $food->getId()]);
+        return $this->json(["message" => 'Successfully associated new foods to user ' . $userFood->getUserId()]);
     }
 
 
